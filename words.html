@@ -12,6 +12,7 @@
 			height: 80%;
 			left: 5%;
 			top: 20%;
+			z-index: 2;
 		}
 
 		.wordbox-title {
@@ -32,6 +33,21 @@
 			text-align: center;		 
 		}
 
+/*
+		.word {
+			font-size: 4vh;
+			padding:2vh;
+			position: absolute;
+			height: 20vh;
+			width: 20vh;
+		}
+*/
+		.word-button {
+			position:absolute;
+			height: 12.75vh;
+			width: 12.75vh;	
+		}
+
 		.wordbox-content {
 			font-size: 4vh;
 			padding: 2vh;
@@ -42,10 +58,25 @@
 			height: 20vh;
 			width: 20vh;
 		}
-		.word-button {
-			position:absolute;
-			height: 20vh;
-			width: 20vh;
+
+		#wbutton1 {
+			left: 12.5vh;
+			top: 25vh;
+			background-color: black;
+			color: white;
+		}
+
+		#wbutton2 {
+			left: 25vh;
+			top: 25vh;
+			background-color: white;
+		}
+
+		#wbutton3 {
+			left: 37.5vh;
+			top: 25vh;
+			background-color: black;
+			color: white;
 		}
 
 	</style>
@@ -53,13 +84,16 @@
 <body>
 	<div class="title">WORDS</div>
 
+	<div class='word' id='word1'><button class='word-button' id='wbutton1' onclick='openWordBox()'>POEM 1</button></div>
+	<div class='word' id='word2'><button class='word-button' id='wbutton2' onclick='openWordBox()'>POEM 2</button></div>
+	<div class='word' id='word3'><button class='word-button' id='wbutton3' onclick='openWordBox()'>POEM 3</button></div>
+
 	<div class='wordbox' id='wordbox'>
 		<div class='exit-button' id='exit-button'><button class='exit' onclick='hideWordBox()'>X</button></div>
-		<div class='wordbox-title' id='wordbox-content'>title</div>
+		<div class='wordbox-title' id='wordbox-title'>title</div>
 		<div class='wordbox-content' id='wordbox-content'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
 	</div>
 
-	<div class='word-button' id='word-button-div'><button id='word-button' onclick='openWordBox()'>POEM 1</button></div>
 
 	<div class="dropdown">
 	    <button class="dropbtn" onclick="document.location.href='index.html'">| | |</button>

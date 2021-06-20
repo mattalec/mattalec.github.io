@@ -1,4 +1,4 @@
-document.getElementById('wordbox').style.display = 'block';//'none';
+document.getElementById('wordbox').style.display = 'none';
 
 function openWordBox()
 {
@@ -10,4 +10,9 @@ function openWordBox()
 function hideWordBox()
 {
 	document.getElementById('wordbox').style.display = 'none';
+}
+
+function getWords()
+{
+	console.log('GET WORDS');	
 }
