@@ -1,9 +1,12 @@
+// canvas settings
+
 var canvas = document.querySelector('canvas');
 // search for canvas vairable
 var fullwidth = window.innerWidth;
 var fullheight = window.innerHeight;
 canvas.width = fullwidth;
 canvas.height = fullheight;
+var c = canvas.getContext('2d');
 
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -14,7 +17,8 @@ function hexToRgb(hex) {
   } : null;
 }
 
-var c = canvas.getContext('2d');
+
+//Event listeners
 
 window.addEventListener('resize', function(event) {
 	canvas.width = window.innerWidth;
@@ -22,7 +26,10 @@ window.addEventListener('resize', function(event) {
 	init();
 })
 
+
+
 //CHESSBOARD
+
 var width = fullheight / 8;
 var height = fullheight / 8;
 
@@ -33,8 +40,13 @@ var dr = (Math.random() - 0.5) * 2;
 var dg = (Math.random() - 0.5) * 2;
 var db = (Math.random() - 0.5) * 2;
 
+// Draw chessboard with updated r,g,b
+
 function update_board(r,g,b)
 {
+
+	// taking height / 8 as the length of the square
+
 	var rowcount = 0
 	var square_side_cnt = Math.ceil(fullwidth / height);
 	if (square_side_cnt % 2 == 1) square_side_cnt++;
@@ -44,7 +56,6 @@ function update_board(r,g,b)
 	for (var i = 0; i < square_cnt; i++)
 	{
 		// for chess board i % 8;
-		
 		var real = i % square_side_cnt;
 		var x = real * width; 
 		var y = rowcount * height;
@@ -72,19 +83,22 @@ function update_board(r,g,b)
 	}
 }
 
-function Piece(image, x, y, dx, dy, height, width, changed, lvl) 
-{
 
+// Piece class for movement
+
+
+function Piece(image, x, y, dx, height, width, lvl) 
+{
+	// initialise variables
 	this.image = image;
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
-	this.dy = dy;
 	this.height = height;
 	this.width = width;
-	this.changed = changed;
 	this.lvl = lvl;
-
+	this.changed = 1;
+	
 	this.draw = function()
 	{	
 		piece_height = this.y + (-this.height * (this.lvl * 2));
@@ -93,56 +107,39 @@ function Piece(image, x, y, dx, dy, height, width, changed, lvl)
 
 	this.update = function()
 	{
-		if (!(Math.floor(this.x % this.width)) && !(Math.floor(this.y % this.height)))
+		// random element of being able to reverse dx on square center
+		if (this.x % width)
 		{
-			change = Math.round(Math.random() - 0.25);
-			if (change)
+			if (Math.random() > 0.999)
 			{
-				if (this.changed)
-				{
-					this.changed = 0;
-					if (Math.random() > 0.5) this.dy = 1;
-					else this.dy = 0;
-				}
-				else
-				{
-					this.changed = 1;
-					if (Math.random() > 0.5) this.dx = 1;
-					else this.dx = 0;					
-				}
-			}
+				if (this.dx) this.dx = 0;
+				else this.dx = 1;
+			}		
 		}
 
-		if (changed)
-		{
-			if (this.dx) this.x++;
-			else this.x--;
-		}
-		else
-		{
-			if (this.dy) this.y++;
-			else this.y--;
-		}
+		// piece movement
+		if (this.dx) this.x++; // and dx == 1 which is
+		else this.x--;
+
+		// piece barriers, if piece > than stopping right, it will go back
 
 		stopping_xleft = this.lvl * 2 * this.width;
 		stopping_xright = this.lvl * 12 * this.width;
 		if (this.lvl == 0)
 		{
 			stopping_xleft = this.width;
-			stopping_xright = this.width;		
+			stopping_xright = this.width * 12;		
 		}
 		if (this.lvl >= 2) stopping_xleft = (this.lvl * 2 + (lvl / 2)) * this.width;
 		if (this.x <= stopping_xleft)
 		{
 			// makes pieces go right
 			this.dx = 1;
-			this.dy = 1;
 		}
 		else if (this.x >= stopping_xright)
 		{
 			// makes pieces go left
 			this.dx = 0;
-			this.dy = 0;
 		}
 
 		this.draw();
@@ -202,11 +199,9 @@ function piece_place(pieceArray, pieceImage, n, lvl)
 	{
 		var x = Math.round(Math.random() * 10) * (width) + (width * 2 * i);
 		var y = height * 7;//Math.round(Math.random()*8) * height;
-		var dx = 0;
-		var dy = 0;
-		var changed = 1;
+		var dx = Math.round(Math.random());;
 
-		pieceArray.push(new Piece(pieceImage, x, y, dx, dy, height, width, changed, lvl));	
+		pieceArray.push(new Piece(pieceImage, x, y, dx, height, width, lvl));	
 	}
 
 	return pieceArray
@@ -215,7 +210,7 @@ function piece_place(pieceArray, pieceImage, n, lvl)
 function init()
 {
 	pieceArray = [];
-	n = [16, 8, 8, 1, 1];
+	n = [8, 4, 4, 1, 1]; // number of pieces on each lvl
 	lvl = [0, 1, 2, 3, 3];
 	images = [rook_image, bishop_image, knight_image, king_image, queen_image];
 
@@ -247,13 +242,6 @@ function animate() {
 
 	update_board(r,g,b);
 	draw_roofs();
-	/*c.drawImage(roof_left_image, 0, height * 3.3, width , height * 7);
-	c.drawImage(roof_mid_image, width, height * 3.3, width * 4, height * 7);
-	c.drawImage(roof_mid_image, width * 5, height * 3.3, width * 4, height * 7);	
-	c.drawImage(roof_mid_image, width * 9, height * 3.3, width * 4, height * 7);
-	c.drawImage(roof_mid_image, width * 11, height * 3.3, width * 4, height * 7);	
-	c.drawImage(roof_right_image, width * 15, height * 3.3, width, height * 7);
-	*/
 	for (var i = 0; i < pieceArray.length; i++)
 	{
 		pieceArray[i].update();
