@@ -1,4 +1,5 @@
 // canvas settings
+
 var canvas = document.querySelector('canvas');
 // search for canvas vairable
 var fullwidth = window.innerWidth;
@@ -18,17 +19,18 @@ function hexToRgb(hex) {
 
 
 //Event listeners
+
 window.addEventListener('resize', function(event) {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	fullwidth = window.innerWidth;
-	fullheight = window.innerHeight;
-	height = fullheight / 8;
 	init();
 })
 
 
-//Chessboard settings
+
+//CHESSBOARD
+
+var width = fullheight / 8;
 var height = fullheight / 8;
 
 var r = Math.random() * 255;
@@ -38,8 +40,8 @@ var dr = (Math.random() - 0.5) * 2;
 var dg = (Math.random() - 0.5) * 2;
 var db = (Math.random() - 0.5) * 2;
 
-
 // Draw chessboard with updated r,g,b
+
 function update_board(r,g,b)
 {
 
@@ -55,13 +57,13 @@ function update_board(r,g,b)
 	{
 		// for chess board i % 8;
 		var real = i % square_side_cnt;
-		var x = real * height; 
+		var x = real * width; 
 		var y = rowcount * height;
 		if (!(rowcount % 2))
 		{
 			if (i % 2)
 			{
-				c.fillRect(x, y, height, height);
+				c.fillRect(x, y, height, width);
 				c.fillStyle = 'rgba('+r+','+g+','+b+',1)';
 			}
 		}
@@ -69,7 +71,7 @@ function update_board(r,g,b)
 		{
 			if (!(i % 2))
 			{
-				c.fillRect(x, y, height, height);
+				c.fillRect(x, y, height, width);
 				c.fillStyle = 'rgba('+r+','+g+','+b+',1)';
 			}
 		}
@@ -83,7 +85,9 @@ function update_board(r,g,b)
 
 
 // Piece class for movement
-function Piece(image, x, y, dx, height, lvl) 
+
+
+function Piece(image, x, y, dx, height, width, lvl) 
 {
 	// initialise variables
 	this.image = image;
@@ -91,19 +95,20 @@ function Piece(image, x, y, dx, height, lvl)
 	this.y = y;
 	this.dx = dx;
 	this.height = height;
+	this.width = width;
 	this.lvl = lvl;
 	this.changed = 1;
 	
 	this.draw = function()
 	{	
 		piece_height = this.y + (-this.height * (this.lvl * 2));
-		c.drawImage(this.image, this.x , piece_height, this.height, this.height);
+		c.drawImage(this.image, this.x , piece_height, this.height, this.width);
 	}
 
 	this.update = function()
 	{
 		// random element of being able to reverse dx on square center
-		if (this.x % height)
+		if (this.x % width)
 		{
 			if (Math.random() > 0.999)
 			{
@@ -118,14 +123,14 @@ function Piece(image, x, y, dx, height, lvl)
 
 		// piece barriers, if piece > than stopping right, it will go back
 
-		stopping_xleft = this.lvl * 2 * this.height;
-		stopping_xright = this.lvl * 12 * this.height;
+		stopping_xleft = this.lvl * 2 * this.width;
+		stopping_xright = this.lvl * 12 * this.width;
 		if (this.lvl == 0)
 		{
-			stopping_xleft = this.height;
-			stopping_xright = this.height * 12;		
+			stopping_xleft = this.width;
+			stopping_xright = this.width * 12;		
 		}
-		if (this.lvl >= 2) stopping_xleft = (this.lvl * 2 + (lvl / 2)) * this.height;
+		if (this.lvl >= 2) stopping_xleft = (this.lvl * 2 + (lvl / 2)) * this.width;
 		if (this.x <= stopping_xleft)
 		{
 			// makes pieces go right
@@ -141,7 +146,6 @@ function Piece(image, x, y, dx, height, lvl)
 	}
 }
 
-
 function draw_roofs()
 {
 	get_roof(0);
@@ -150,25 +154,25 @@ function draw_roofs()
 	get_roof(3);
 
 }
+
 function get_roof(lvl) // 0 is ground
 {
-	corner_width = height * (3 * lvl)
-	if (lvl == 12) corner_width = height * ((8/3) * lvl);
+	corner_width = width * (3 * lvl)
+	if (lvl == 12) corner_width = width * ((8/3) * lvl);
 	roof_height = height * (3.3 + (2 * -lvl))
 	// y distance to get roofs touching
 	n = -height * 0.4;
 
-	c.drawImage(roof_left_image, corner_width, roof_height, height, height * 7);
+	c.drawImage(roof_left_image, corner_width, roof_height, width, height * 7);
 	// now the second, slightly higher and to the right
-	c.drawImage(roof_left_image, corner_width + height, roof_height + n, height, height * 7);
+	c.drawImage(roof_left_image, corner_width + width, roof_height + n, width, height * 7);
 
 	for (i = 0; i < 4; i++)
 	{
-		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 1) * height), roof_height, height * 4, height * 7);
-		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 2) * height), roof_height + n, height * 4, height * 7);
+		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 1) * width), roof_height, width * 4, height * 7);
+		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 2) * width), roof_height + n, width * 4, height * 7);
 	}
 }
-
 
 var rook_image = new Image();
 rook_image.src = 'images/rook.png';
@@ -193,11 +197,11 @@ function piece_place(pieceArray, pieceImage, n, lvl)
 
 	for (var i =0; i < n; i++)
 	{
-		var x = Math.round(Math.random() * 10) * (height) + (height * 2 * i);
+		var x = Math.round(Math.random() * 10) * (width) + (width * 2 * i);
 		var y = height * 7;//Math.round(Math.random()*8) * height;
 		var dx = Math.round(Math.random());;
 
-		pieceArray.push(new Piece(pieceImage, x, y, dx, height, lvl));	
+		pieceArray.push(new Piece(pieceImage, x, y, dx, height, width, lvl));	
 	}
 
 	return pieceArray
