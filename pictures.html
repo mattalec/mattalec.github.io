@@ -50,39 +50,50 @@
 
 	.row4 {
 		top: 62.5vh;
-	}		
+	}	
+
+	.row5 {
+		top: 75vh;
+	}	
 
 	.img:hover {
 		border:  1px solid red;
 	}
 
 	#picture1 {
-	    background: url(./pictures/img_mountains.jpg);
+	    background: url(./pictures/bird-fire.png);
 
 	    background-repeat: no-repeat;
 	    background-size: cover;
 	}
 
 	#picture2 {
-	    background: url(./pictures/img_nature.jpg);
+	    background: url(./pictures/close-fire.png);
 
 	    background-repeat: no-repeat;
 	    background-size: cover;
 	}
 
 	#picture3 {
-	    background: url(./pictures/img_mountains.jpg);
+	    background: url(./pictures/van-fire.png);
 
 	    background-repeat: no-repeat;
 	    background-size: cover;
 	}
 
 	#picture4 {
-	    background: url(./pictures/img_mountains.jpg);
+	    background: url(./pictures/horned-fire.png);
 
 	    background-repeat: no-repeat;
 	    background-size: cover;
 	}
+
+	#picture5 {
+	    background: url(./pictures/ghost-fire.png);
+
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	}	
 
 	#full-screen-div {
 		position: absolute;
@@ -161,11 +172,24 @@
 		<div id="close-content-div"><button id='close-content-button' value='X' onclick='closeContent()'></div>		
 	</div>
 	
-	<div class="img col1 row1" id='picture1' onclick='getContent("./pictures/img_mountains.jpg")'></div>
-	<div class="img col1 row2" id='picture2' onclick='getContent("./pictures/img_nature.jpg")'></div>
-	<div class="img col1 row3" id='picture3'></div>
-	<div class="img col1 row4" id='picture4'></div>
-	<div class="img col1 row5" id='picture5'></div>
+	<div class="img col1 row1" id='picture1' onclick='getContent("./pictures/bird-fire.png")'></div>
+	<div class="img col1 row2" id='picture2' onclick='getContent("./pictures/close-fire.png")'></div>
+	<div class="img col1 row3" id='picture3' onclick='getContent("./pictures/van-fire.png")'></div>
+	<div class="img col1 row4" id='picture4' onclick='getContent("./pictures/horned-fire.png")'></div>
+	<div class="img col1 row5" id='picture5' onclick='getContent("./pictures/ghost-fire.png")'></div>
+
+	<div class="img col2 row1" id='picture1' onclick='getContent("./pictures/img_mountains.jpg")'></div>
+	<div class="img col2 row2" id='picture2' onclick='getContent("./pictures/img_nature.jpg")'></div>
+
+	<div class="img col2 row3" id='picture3'></div>
+	<div class="img col2 row4" id='picture4'></div>
+	<div class="img col2 row5" id='picture5'></div>
+
+	<div class="img col3 row1" id='picture1' onclick='getContent("./pictures/img_mountains.jpg")'></div>
+	<div class="img col3 row2" id='picture2' onclick='getContent("./pictures/img_nature.jpg")'></div>
+	<div class="img col3 row3" id='picture3'></div>
+	<div class="img col3 row4" id='picture4'></div>
+	<div class="img col3 row5" id='picture5'></div>		
 
 <!--
 	<div id='picture1'>
