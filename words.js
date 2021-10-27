@@ -31,7 +31,7 @@ var words = {
 	Gasps murmur<br>
 	<br>
 	Chaos speeds the reaction of life<br>
-	Breeding more known from the known<br>
+	Breeding more from the more bred<br>
 	Until all walls are covered<br>
 	Grey inside and out`,
 }

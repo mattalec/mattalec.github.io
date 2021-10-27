@@ -171,6 +171,7 @@ function get_roof(lvl) // 0 is ground
 	{
 		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 1) * width), roof_height, width * 4, height * 7);
 		c.drawImage(roof_mid_image, corner_width + (((4 * i) + 2) * width), roof_height + n, width * 4, height * 7);
+		c.drawImage(pillar_image, corner_width + (((4 * i) + 2) * width), roof_height + (height * 3.58), width / 2, height * 1.2);
 	}
 }
 
@@ -189,6 +190,8 @@ var roof_left_image = new Image();
 roof_left_image.src = 'images/roof_left.png';
 var roof_mid_image = new Image();
 roof_mid_image.src = 'images/roof_middle.png';
+var pillar_image = new Image();
+pillar_image.src = 'images/pillar.png';
 
 var pieceArray = [];
 
@@ -241,11 +244,11 @@ function animate() {
 	b += Math.random() * 3 * db;
 
 	update_board(r,g,b);
-	draw_roofs();
 	for (var i = 0; i < pieceArray.length; i++)
 	{
 		pieceArray[i].update();
 	}
+	draw_roofs();
 }
 
 animate()
