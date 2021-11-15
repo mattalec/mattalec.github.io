@@ -4,6 +4,7 @@ var fullwidth = window.innerWidth;
 var fullheight = window.innerHeight;
 canvas.width = fullwidth;
 canvas.height = fullheight;
+var c = canvas.getContext('2d');
 
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -14,13 +15,10 @@ function hexToRgb(hex) {
   } : null;
 }
 
-var c = canvas.getContext('2d');
-
 window.addEventListener('resize', function(event) {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	window.fullwidth = window.innerWidth;
-	window.fullheight = window.innerHeight;
+	init();
 })
 
 //CHESSBOARD
