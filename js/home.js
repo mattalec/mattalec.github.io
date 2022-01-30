@@ -152,7 +152,6 @@ function draw_roofs()
 	get_roof(1);
 	get_roof(2);
 	get_roof(3);
-
 }
 
 function get_roof(lvl) // 0 is ground
@@ -223,27 +222,154 @@ function init()
 	}
 }
 
-init();
+// function animateflakes() {
+// 	this.ctx = canvas.getContext("2d");
 
+// 	this.mp = 225; //max particles
+// 	this.particles = [];
+// 	for (var i = 0; i < mp; i++) {
+// 	particles.push({
+// 	x: Math.random()*W, //x-coordinate
+// 	y: Math.random()*H, //y-coordinate
+// 	r: Math.random()*4+1, //radius
+// 	d: Math.random()*mp //density
+// 	});
+
+// 	//Lets draw the flakes
+// 	this.drawFlakes = function() {
+// 		this.ctx.clearRect(0, 0, W, H);
+		
+// 		this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+// 		this.ctx.beginPath();
+// 		for(var i = 0; i < this.mp; i++)
+// 		{
+// 		var p = this.particles[i];
+// 		this.ctx.moveTo(p.x, p.y);
+// 		this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+// 		}
+// 		this.ctx.fill();
+// 		this.updateFlakes();
+// 	}
+
+// 	//Function to move the snowflakes
+// 	//angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
+// 	this.angle = 0;
+// 	this.updateFlakes = function()
+// 	{
+// 		this.angle += 0.01;
+// 		for(var i = 0; i < this.mp; i++)
+// 		{
+// 		var p = this.particles[i];
+// 		//Updating X and Y coordinates
+// 		//We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
+// 		//Every particle has its own density which can be used to make the downward movement different for each flake
+// 		//Lets make it more random by adding in the radius
+// 		p.y += Math.cos(this.angle+p.d) + 1 + p.r/2;
+// 		p.x += Math.sin(this.angle) * 2;
+	
+// 		//Sending flakes back from the top when it exits
+// 		//Lets make it a bit more organic and let flakes enter from the left and right also.
+// 		if(p.x > W+5 || p.x < -5 || p.y > H)
+// 		{
+// 			if(i%3 > 0) //66.67% of the flakes
+// 			{
+// 			this.particles[i] = {x: Math.random()*W, y: -10, r: p.r, d: p.d};
+// 			}
+// 			else
+// 			{
+// 				//If the flake is exitting from the right
+// 				if(Math.sin(angle) > 0)
+// 				{
+// 				//Enter from the left
+// 				this.particles[i] = {x: -5, y: Math.random()*H, r: p.r, d: p.d};
+// 				}
+// 				else
+// 				{
+// 				//Enter from the right
+// 				this.particles[i] = {x: W+5, y: Math.random()*H, r: p.r, d: p.d};
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+function getrgb(r, g, b, dr, dg, db) {
+
+	// get selected option from DOM
+	var weathers = document.getElementsByClassName("checkbox");
+	var selectedweather = 'rgb';
+	for (var i = 0; i < weathers.length; i++)
+	{
+		// see if checked
+		if (weathers[i].checked == true) selectedweather = weathers[i].id;
+	}
+
+	// associate to hard-coded boundaries
+	// weather ids = [snow, sun, rain , beach, snow]
+	// if (selectedweather == 'snow') animateflakes();
+
+	// array => [r_lower, r_higher, g_lower, ...]
+	var weatherColours = {
+		'snow' : [0, 50, 190, 230, 170, 255],
+		'sun' : [40, 100, 40, 100, 40, 100],
+		'rain' : [100, 170, 100, 170, 100, 170],
+		'beach' : [170, 255, 170, 255, 170, 255],
+		'rgb' : [0, 255, 0, 255, 0, 255],
+		'board' : [0, 10, 0, 10, 0, 10]
+	}
+
+	var rgb_bounds = weatherColours[selectedweather];
+	console.log(rgb_bounds);
+	console.log('r:g:b =>'+r,g,b)
+	// tend towards boundary
+	if (r > rgb_bounds[1]) dr = -1;
+	else if (r < rgb_bounds[0]) dr = 1;
+
+	if (g > rgb_bounds[3]) dg = -1;
+	else if (g < rgb_bounds[2]) dg = 1;
+
+	if (b > rgb_bounds[5]) db = -1;
+	else if (b < rgb_bounds[4]) db = 1;
+
+	return {'dr': dr, 'dg': dg, 'db': db}
+}
+
+function checkedWeather(id) {
+	var weathers = document.getElementsByClassName("checkbox");
+	for (var i = 0; i < weathers.length; i++) {
+		if (i != id) {
+			weathers[i].checked = false;
+			document.getElementById("icon"+i).setAttribute("style","-webkit-filter:grayscale(100%)");
+			// if (document.getElementById("icon"+i).getAttribute("style","-webkit-filter:invert(100%)"))
+			// {
+			// 	document.getElementById("icon"+i).setAttribute("style","-webkit-filter:grayscale(100%)")
+			// }
+		}
+		else {
+			!weathers[i].checked ? document.getElementById("icon"+i).setAttribute("style","-webkit-filter:grayscale(100%)") : document.getElementById("icon"+i).setAttribute("style","-webkit-filter:grayscale(0%)")
+		}
+	}
+}
 
 function animate() {
 	requestAnimationFrame(animate);
 	c.clearRect(0, 0, innerWidth, innerHeight);
 
-	if (r > 255) dr = -1;
-	else if (r < 0) dr = 1;	
+	// get rgb for squares
+	var RGB = getrgb(r, g, b, dr, dg, db);
 
-	if (g > 255) dg = -1;
-	else if (g < 0) dg = 1;	
+	// change value in correct dir
+	var change_rate = 2;
 
-	if (b > 255) db = -1;
-	else if (b < 0) db = 1;	
-
-	r += Math.random() * 3 * dr;
-	g += Math.random() * 3 * dg;
-	b += Math.random() * 3 * db;
+	r += Math.random() * change_rate * RGB['dr'];
+	g += Math.random() * change_rate * RGB['dg'];
+	b += Math.random() * change_rate * RGB['db'];
+	dr = RGB['dr'];
+	dg = RGB['dg'];
+	db = RGB['db'];
 
 	update_board(r,g,b);
+
 	for (var i = 0; i < pieceArray.length; i++)
 	{
 		pieceArray[i].update();
@@ -251,4 +377,5 @@ function animate() {
 	draw_roofs();
 }
 
-animate()
+init();
+animate();
