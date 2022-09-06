@@ -222,77 +222,6 @@ function init()
 	}
 }
 
-// function animateflakes() {
-// 	this.ctx = canvas.getContext("2d");
-
-// 	this.mp = 225; //max particles
-// 	this.particles = [];
-// 	for (var i = 0; i < mp; i++) {
-// 	particles.push({
-// 	x: Math.random()*W, //x-coordinate
-// 	y: Math.random()*H, //y-coordinate
-// 	r: Math.random()*4+1, //radius
-// 	d: Math.random()*mp //density
-// 	});
-
-// 	//Lets draw the flakes
-// 	this.drawFlakes = function() {
-// 		this.ctx.clearRect(0, 0, W, H);
-		
-// 		this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-// 		this.ctx.beginPath();
-// 		for(var i = 0; i < this.mp; i++)
-// 		{
-// 		var p = this.particles[i];
-// 		this.ctx.moveTo(p.x, p.y);
-// 		this.ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
-// 		}
-// 		this.ctx.fill();
-// 		this.updateFlakes();
-// 	}
-
-// 	//Function to move the snowflakes
-// 	//angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
-// 	this.angle = 0;
-// 	this.updateFlakes = function()
-// 	{
-// 		this.angle += 0.01;
-// 		for(var i = 0; i < this.mp; i++)
-// 		{
-// 		var p = this.particles[i];
-// 		//Updating X and Y coordinates
-// 		//We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
-// 		//Every particle has its own density which can be used to make the downward movement different for each flake
-// 		//Lets make it more random by adding in the radius
-// 		p.y += Math.cos(this.angle+p.d) + 1 + p.r/2;
-// 		p.x += Math.sin(this.angle) * 2;
-	
-// 		//Sending flakes back from the top when it exits
-// 		//Lets make it a bit more organic and let flakes enter from the left and right also.
-// 		if(p.x > W+5 || p.x < -5 || p.y > H)
-// 		{
-// 			if(i%3 > 0) //66.67% of the flakes
-// 			{
-// 			this.particles[i] = {x: Math.random()*W, y: -10, r: p.r, d: p.d};
-// 			}
-// 			else
-// 			{
-// 				//If the flake is exitting from the right
-// 				if(Math.sin(angle) > 0)
-// 				{
-// 				//Enter from the left
-// 				this.particles[i] = {x: -5, y: Math.random()*H, r: p.r, d: p.d};
-// 				}
-// 				else
-// 				{
-// 				//Enter from the right
-// 				this.particles[i] = {x: W+5, y: Math.random()*H, r: p.r, d: p.d};
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
 function getrgb(r, g, b, dr, dg, db) {
 
 	// get selected option from DOM
@@ -310,17 +239,15 @@ function getrgb(r, g, b, dr, dg, db) {
 
 	// array => [r_lower, r_higher, g_lower, ...]
 	var weatherColours = {
-		'snow' : [0, 50, 190, 230, 170, 255],
-		'sun' : [40, 100, 40, 100, 40, 100],
-		'rain' : [100, 170, 100, 170, 100, 170],
+		'snow'  : [0, 50, 190, 230, 170, 255],
+		'sun'   : [40, 100, 40, 100, 40, 100],
+		'rain'  : [100, 170, 100, 170, 100, 170],
 		'beach' : [170, 255, 170, 255, 170, 255],
-		'rgb' : [0, 255, 0, 255, 0, 255],
+		'rgb'   : [0, 255, 0, 255, 0, 255],
 		'board' : [0, 10, 0, 10, 0, 10]
 	}
 
 	var rgb_bounds = weatherColours[selectedweather];
-	console.log(rgb_bounds);
-	console.log('r:g:b =>'+r,g,b)
 	// tend towards boundary
 	if (r > rgb_bounds[1]) dr = -1;
 	else if (r < rgb_bounds[0]) dr = 1;
@@ -359,7 +286,7 @@ function animate() {
 	var RGB = getrgb(r, g, b, dr, dg, db);
 
 	// change value in correct dir
-	var change_rate = 2;
+	var change_rate = 0.5;
 
 	r += Math.random() * change_rate * RGB['dr'];
 	g += Math.random() * change_rate * RGB['dg'];
