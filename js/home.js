@@ -174,23 +174,25 @@ function get_roof(lvl) // 0 is ground
 	}
 }
 
+const image_dir = './images/'
+
 var rook_image = new Image();
-rook_image.src = './images/rook.png';
+rook_image.src = image_dir+'rook.png';
 var bishop_image = new Image();
-bishop_image.src = './images/bishop.png';
+bishop_image.src = image_dir+'bishop.png';
 var knight_image = new Image();
-knight_image.src = './images/knight.png';
+knight_image.src = image_dir+'knight.png';
 var king_image = new Image();
-king_image.src = './images/king.png';
+king_image.src = image_dir+'king.png';
 var queen_image = new Image();
-queen_image.src = './images/queen.png';
+queen_image.src = image_dir+'queen.png';
 
 var roof_left_image = new Image();
-roof_left_image.src = './images/roof_left.png';
+roof_left_image.src = image_dir+'roof_left.png';
 var roof_mid_image = new Image();
-roof_mid_image.src = './images/roof_middle.png';
+roof_mid_image.src = image_dir+'roof_middle.png';
 var pillar_image = new Image();
-pillar_image.src = './images/pillar.png';
+pillar_image.src = image_dir+'pillar.png';
 
 var pieceArray = [];
 
